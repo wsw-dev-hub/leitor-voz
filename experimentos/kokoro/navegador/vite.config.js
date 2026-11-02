@@ -1,0 +1,1 @@
+export default { server: { port: 5199, headers: { "Cross-Origin-Opener-Policy": "same-origin", "Cross-Origin-Embedder-Policy": "require-corp" }, fs: { allow: [".."] } }, optimizeDeps: { exclude: ["onnxruntime-web"] } };
