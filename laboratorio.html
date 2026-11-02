@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#1a2238" />
+    <title>Laboratório de voz</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      crossorigin="anonymous"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Literata:opsz,wght@7..72,400;7..72,500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/lab/lab.css" />
+  </head>
+  <body>
+    <header class="topo">
+      <div class="marca">
+        <svg class="logo" viewBox="0 0 32 32" aria-hidden="true">
+          <rect x="3" y="12" width="4" height="8" rx="2" />
+          <rect x="10" y="6" width="4" height="20" rx="2" />
+          <rect x="17" y="9" width="4" height="14" rx="2" />
+          <rect x="24" y="13" width="4" height="6" rx="2" />
+        </svg>
+        <div>
+          <h1>Laboratório de voz</h1>
+          <p>Ajuste duas versões da mesma fala e compare. As vozes rodam no seu navegador, sem serviços pagos.</p>
+        </div>
+      </div>
+      <div class="topo-dir">
+        <span class="estado" id="estado">Verificando o navegador…</span>
+        <a class="voltar" href="/">Voltar ao leitor</a>
+      </div>
+    </header>
+
+    <main class="lab">
+      <section class="painel texto" aria-labelledby="t-texto">
+        <div class="painel-cab">
+          <h2 id="t-texto">Texto</h2>
+          <label class="campo-linha">
+            <span>Exemplo</span>
+            <select id="exemplo"></select>
+          </label>
+        </div>
+        <textarea id="texto" rows="6" spellcheck="true" aria-label="Texto para as duas tomadas"></textarea>
+        <div class="texto-rodape">
+          <label class="chave">
+            <input type="checkbox" id="usar-marcacoes" checked />
+            <span>Aplicar as marcações do texto, como <code>[animado]</code> e <code>[contagem]</code></span>
+          </label>
+          <button type="button" class="btn-prim" id="gerar-ambas">Gerar A e B</button>
+        </div>
+      </section>
+
+      <div class="tomadas">
+        <section class="painel tomada" id="tomada-a" data-lado="a" aria-label="Tomada A"></section>
+        <section class="painel tomada" id="tomada-b" data-lado="b" aria-label="Tomada B"></section>
+      </div>
+
+      <section class="painel comparacao" id="comparacao" hidden aria-labelledby="t-comp">
+        <h2 id="t-comp">Comparação</h2>
+        <div class="tabela-rolagem">
+          <table>
+            <thead><tr><th scope="col">Medida</th><th scope="col">A</th><th scope="col">B</th><th scope="col">Diferença</th></tr></thead>
+            <tbody id="comp-corpo"></tbody>
+          </table>
+        </div>
+        <p class="nota">Variação do tom: distância, em semitons, entre os trechos mais graves e mais agudos da fala. Quanto maior, menos monótona.</p>
+      </section>
+
+      <details class="painel detalhes">
+        <summary>Fonemas e trechos gerados</summary>
+        <div class="detalhes-grade">
+          <div><h3>Tomada A</h3><ol id="trechos-a" class="trechos"></ol></div>
+          <div><h3>Tomada B</h3><ol id="trechos-b" class="trechos"></ol></div>
+        </div>
+      </details>
+
+      <footer class="rodape">
+        <p>
+          Na primeira vez, cada voz é baixada uma única vez (de 63 a 92 MB) e fica guardada no navegador.
+          Vozes Piper: Hugging Face (rhasspy, OpenVoiceOS). Vozes Kokoro: jsDelivr. Pronúncia: espeak-ng (GPL-3.0).
+        </p>
+        <button type="button" class="btn-link" id="limpar">Apagar vozes baixadas</button>
+      </footer>
+    </main>
+
+    <script type="module" src="/src/lab/main.ts"></script>
+  </body>
+</html>

@@ -55,6 +55,27 @@ Qualquer commit na branch principal (inclusive editando um arquivo direto no sit
 
 Os modelos de voz e de análise ficam em `wrangler.jsonc` (`OPENAI_TTS_MODEL`, `ELEVENLABS_MODEL`, `GEMINI_TTS_MODEL`, `OPENAI_ANALISE_MODEL`, `GEMINI_ANALISE_MODEL`). Para trocar, edite esse arquivo no GitHub.
 
+## Laboratório de voz
+
+A página **/laboratorio** (link no topo do app) compara duas versões da mesma fala, A e B, com vozes masculinas que rodam **no navegador**, sem API paga:
+
+| Voz | Motor | Origem do download | Tamanho |
+|---|---|---|---|
+| Faber | Piper | Hugging Face (rhasspy), gravações de locutor brasileiro | 63 MB |
+| Miro | Piper | Hugging Face (OpenVoiceOS), dados sintéticos, adaptada de voz de Portugal | 64 MB |
+| Edresson | Piper | Hugging Face (rhasspy), qualidade baixa | 63 MB |
+| Alex, Santa | Kokoro | jsDelivr | 92 MB (modelo compartilhado) |
+
+Cada voz é baixada uma vez e fica guardada no navegador. Controles:
+
+- **Todas as vozes:** velocidade, pausas entre frases, contraste de volume entre emoções e andamento da `[contagem]` (BPM, com cada número caindo no tempo).
+- **Kokoro:** tom (mais leve ↔ mais grave) e expressividade, que mistura a entonação de uma voz doadora sem mudar o timbre.
+- **Piper:** variação de entonação (`noise_scale`) e variação de ritmo (`noise_w`).
+
+Cada tomada mostra duração, tom médio, variação do tom (semitons), pausas e faixa de volume, e a tabela de comparação mostra a diferença entre A e B. Dá para baixar o WAV e copiar os ajustes em JSON.
+
+O modelo roda num Web Worker com `onnxruntime-web`. Para usar várias threads, a página precisa de isolamento entre origens: o arquivo `public/_headers` já configura isso na Cloudflare. A pronúncia usa o espeak-ng (pacote `ephone`), que é **GPL-3.0**: ao publicar o app com o laboratório, o código precisa seguir uma licença compatível.
+
 ## Rodar no seu computador (opcional)
 
 Só é preciso para desenvolver. Requisitos: Node.js 22.
@@ -147,5 +168,6 @@ src/         frontend (TypeScript puro)
   main.ts      tela, personas e geração
   editor.ts    editor com marcações coloridas e faixa de interpretação
   sugestao.ts  janela de sugestão da análise
+  lab/         laboratório de voz: motores Kokoro e Piper, prosódia, medições, interface A/B
   browserTts.ts voz do navegador
 ```

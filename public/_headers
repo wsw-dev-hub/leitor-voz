@@ -1,0 +1,11 @@
+# Cabeçalhos dos arquivos estáticos na Cloudflare.
+# O laboratório de voz roda o modelo no navegador e precisa de isolamento entre origens
+# para usar várias threads. Os scripts (inclusive o Web Worker) precisam declarar o mesmo COEP.
+
+/laboratorio*
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Embedder-Policy: require-corp
+
+/assets/*
+  Cross-Origin-Embedder-Policy: require-corp
+  Cross-Origin-Resource-Policy: same-origin

@@ -37,5 +37,9 @@
         "description": "Código que o app pede antes de gerar voz, para estranhos não gastarem seus créditos. Recomendado."
       }
     }
+  },
+  "dependencies": {
+    "ephone": "^1.0.2",
+    "onnxruntime-web": "^1.31.1"
   }
 }
