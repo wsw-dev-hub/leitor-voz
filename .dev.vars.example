@@ -1,0 +1,9 @@
+# Copie este arquivo para .dev.vars e preencha só as chaves dos motores que for usar.
+# Motores sem chave aparecem desativados no app (a voz do navegador funciona sem chave).
+OPENAI_API_KEY=
+ELEVENLABS_API_KEY=
+GEMINI_API_KEY=
+
+# Opcional: se preenchido, o app pede este código antes de gerar voz
+# (evita que estranhos gastem seus créditos quando o app estiver publicado).
+ACCESS_CODE=

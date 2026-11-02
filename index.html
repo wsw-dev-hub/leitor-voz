@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#1a2238" />
+    <title>Leitor com personalidade</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <header class="topo">
+      <div class="marca">
+        <svg class="logo" viewBox="0 0 32 32" aria-hidden="true">
+          <rect x="3" y="12" width="4" height="8" rx="2" />
+          <rect x="10" y="6" width="4" height="20" rx="2" />
+          <rect x="17" y="9" width="4" height="14" rx="2" />
+          <rect x="24" y="13" width="4" height="6" rx="2" />
+        </svg>
+        <div>
+          <h1>Leitor com personalidade</h1>
+          <p>Cole um texto, escolha quem vai ler e marque como cada trecho deve soar.</p>
+        </div>
+      </div>
+      <div class="topo-dir">
+        <ul class="motores" id="motores" aria-label="Motores de voz disponíveis"></ul>
+        <label class="acesso" id="acesso-wrap" hidden>
+          <span>Código de acesso</span>
+          <input id="acesso" type="password" autocomplete="off" />
+        </label>
+      </div>
+    </header>
+
+    <nav class="abas" aria-label="Seções">
+      <button type="button" class="aba" data-aba="texto" aria-pressed="true">Texto</button>
+      <button type="button" class="aba" data-aba="voz" aria-pressed="false">Voz</button>
+    </nav>
+
+    <main class="grade" id="grade" data-aba="texto">
+      <!-- ================= TEXTO ================= -->
+      <section class="painel roteiro" aria-labelledby="t-roteiro">
+        <div class="painel-cab">
+          <div>
+            <h2 id="t-roteiro">Texto</h2>
+            <span class="contador" id="contador"></span>
+          </div>
+          <button type="button" class="btn-sugerir" id="sugerir">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.5l1.9 5.2 5.6.3-4.4 3.5 1.5 5.4L10 12.8l-4.6 3.1 1.5-5.4L2.5 7l5.6-.3z" /></svg>
+            <span>Sugerir voz e marcações</span>
+          </button>
+        </div>
+
+        <div class="ferramentas" role="toolbar" aria-label="Marcações de interpretação">
+          <div class="grupo" id="estilos"></div>
+          <div class="grupo" id="eventos"></div>
+        </div>
+
+        <div class="editor">
+          <div class="editor-fundo" id="fundo" aria-hidden="true"></div>
+          <textarea id="texto" spellcheck="true" aria-label="Texto para leitura"></textarea>
+        </div>
+
+        <div class="faixa-wrap">
+          <h3>Como o texto será interpretado</h3>
+          <div class="faixa" id="faixa"></div>
+          <p class="dica">
+            Selecione um trecho e toque num estilo para marcá-lo. Cada estilo vale até a próxima marcação ou até
+            <code>[normal]</code>. Outras palavras entre colchetes, como <code>[voz de vilão]</code>, também viram instrução.
+          </p>
+        </div>
+
+        <div class="historico" id="historico-wrap" hidden>
+          <h3>Gerados nesta sessão</h3>
+          <ol id="historico"></ol>
+        </div>
+      </section>
+
+      <!-- ================= VOZ ================= -->
+      <aside class="painel voz" aria-labelledby="t-voz">
+        <div class="painel-cab">
+          <h2 id="t-voz">Quem lê</h2>
+          <div class="persona-sel">
+            <select id="lista-personas" aria-label="Persona"></select>
+            <button type="button" class="btn-mini" id="nova" title="Nova persona">Nova</button>
+            <button type="button" class="btn-mini" id="duplicar" title="Duplicar persona">Duplicar</button>
+            <button type="button" class="btn-mini" id="excluir" title="Excluir persona">Excluir</button>
+          </div>
+        </div>
+
+        <div class="cartao" id="cartao">
+          <div class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+          <p class="cartao-resumo" id="resumo"></p>
+          <p class="cartao-voz" id="cartao-voz"></p>
+          <button type="button" class="btn-amostra" id="amostra">Ouvir amostra</button>
+        </div>
+
+        <form id="form-persona" class="campos" autocomplete="off">
+          <fieldset class="bloco">
+            <legend>Sexo da voz</legend>
+            <div class="opcoes sexo" id="op-sexo"></div>
+          </fieldset>
+
+          <fieldset class="bloco">
+            <legend>Idade</legend>
+            <div class="opcoes idade" id="op-idade"></div>
+          </fieldset>
+
+          <fieldset class="bloco">
+            <legend>Entonação</legend>
+            <div class="opcoes entonacao" id="op-entonacao"></div>
+          </fieldset>
+
+          <div class="bloco">
+            <div class="rotulo-linha">
+              <label for="ritmo">Ritmo</label>
+              <output id="ritmo-valor" for="ritmo"></output>
+            </div>
+            <input type="range" id="ritmo" name="ritmo" min="1" max="5" step="1" />
+            <div class="ritmo-marcas" aria-hidden="true"><span>Bem lento</span><span>Natural</span><span>Rápido</span></div>
+          </div>
+
+          <fieldset class="bloco">
+            <legend>Intensidade</legend>
+            <div class="opcoes energia" id="op-energia"></div>
+          </fieldset>
+
+          <div class="bloco motor-bloco">
+            <label>
+              <span class="rotulo">Motor de voz</span>
+              <select name="motor" id="motor"></select>
+            </label>
+            <label class="chave">
+              <input type="checkbox" id="voz-auto" />
+              <span>Escolher a voz automaticamente pelo sexo e idade</span>
+            </label>
+            <label>
+              <span class="rotulo">Voz</span>
+              <select name="voz" id="voz"></select>
+            </label>
+            <small id="voz-nota"></small>
+          </div>
+
+          <details class="bloco ajustes">
+            <summary>Ajustes finos</summary>
+            <div class="ajustes-corpo">
+              <label>
+                <span class="rotulo">Nome da persona</span>
+                <input name="nome" required maxlength="40" />
+              </label>
+              <label>
+                <span class="rotulo">Personalidade (opcional)</span>
+                <textarea name="personalidade" rows="3" maxlength="400"
+                  placeholder="Ex.: bem-humorada, paciente, sorri enquanto fala"></textarea>
+              </label>
+              <label>
+                <span class="rotulo">Idioma e sotaque</span>
+                <input name="sotaque" maxlength="80" placeholder="português do Brasil, sotaque neutro" />
+              </label>
+              <div class="so-eleven" id="so-eleven">
+                <fieldset>
+                  <legend class="rotulo">Variação emocional (ElevenLabs)</legend>
+                  <div class="segmentado">
+                    <label><input type="radio" name="estabilidade" value="criativo" /><span>Mais</span></label>
+                    <label><input type="radio" name="estabilidade" value="natural" /><span>Natural</span></label>
+                    <label><input type="radio" name="estabilidade" value="estavel" /><span>Menos</span></label>
+                  </div>
+                </fieldset>
+                <label>
+                  <span class="rotulo">Tags extras (ElevenLabs)</span>
+                  <input name="tagsBase" maxlength="80" placeholder="[warm]" />
+                </label>
+              </div>
+              <p class="instrucao-previa" id="previa"></p>
+            </div>
+          </details>
+        </form>
+      </aside>
+    </main>
+
+    <!-- ================= CONSOLE (fixo no rodapé) ================= -->
+    <div class="console" role="region" aria-label="Gerar e ouvir">
+      <div class="console-dentro">
+        <p class="console-persona" id="console-persona"></p>
+        <button class="btn-gerar" id="gerar" type="button">Gerar voz</button>
+        <audio id="player" controls hidden></audio>
+        <a class="baixar" id="baixar" hidden download>Baixar WAV</a>
+        <p class="status" id="status" role="status" aria-live="polite"></p>
+      </div>
+    </div>
+
+    <div class="aviso-flutuante" id="toast" role="status" aria-live="polite" hidden>
+      <span id="toast-msg"></span>
+      <button type="button" id="toast-acao" hidden>Desfazer</button>
+    </div>
+
+    <!-- ================= SUGESTÃO ================= -->
+    <dialog class="sugestao" id="sugestao" aria-labelledby="t-sugestao">
+      <form method="dialog" class="sugestao-corpo" id="form-sugestao">
+        <header class="sugestao-cab">
+          <div>
+            <h2 id="t-sugestao">Sugestão para este texto</h2>
+            <p class="fonte" id="sug-fonte"></p>
+          </div>
+          <button type="submit" value="cancelar" class="fechar" aria-label="Fechar">×</button>
+        </header>
+
+        <div class="sugestao-rolagem">
+          <p class="sug-tipo"><strong id="sug-tipo"></strong> <span id="sug-resumo"></span></p>
+
+          <h3>Voz sugerida</h3>
+          <p class="sug-instrucao">Marque o que quer aplicar na persona atual.</p>
+          <ul class="criterios" id="sug-criterios"></ul>
+
+          <h3>Por quê</h3>
+          <ul class="motivos" id="sug-motivos"></ul>
+          <ul class="avisos" id="sug-avisos"></ul>
+
+          <div class="sug-marcas" id="sug-marcas-wrap">
+            <label class="chave">
+              <input type="checkbox" id="sug-aplicar-marcas" checked />
+              <span>Aplicar estas marcações no texto</span>
+            </label>
+            <div class="sug-previa" id="sug-previa"></div>
+          </div>
+        </div>
+
+        <footer class="sugestao-rodape">
+          <button type="submit" value="cancelar" class="btn-sec">Cancelar</button>
+          <button type="submit" value="nova" class="btn-sec">Criar nova persona</button>
+          <button type="submit" value="aplicar" class="btn-prim">Aplicar</button>
+        </footer>
+      </form>
+    </dialog>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

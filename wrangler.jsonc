@@ -1,0 +1,31 @@
+{
+  // Cloudflare Worker: serve a API (/api/*) e os arquivos estáticos gerados pelo Vite (dist/).
+  // Publicação: conecte o repositório do GitHub ao Worker no painel da Cloudflare (Workers Builds).
+  // Cada push na branch principal roda "npm run build" e "npx wrangler deploy" lá, sem linha de comando local.
+  // O nome abaixo precisa ser IGUAL ao nome do Worker no painel.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "leitor-voz",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-10-01",
+  // Mantém as variáveis criadas no painel quando um novo deploy acontece
+  "keep_vars": true,
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"]
+  },
+  "vars": {
+    // Modelos padrão (podem ser trocados sem mexer no código)
+    "OPENAI_TTS_MODEL": "gpt-4o-mini-tts",
+    "ELEVENLABS_MODEL": "eleven_v4",
+    "GEMINI_TTS_MODEL": "gemini-3.8-flash-tts",
+    // IA que analisa o texto e sugere voz e marcações (usa a chave que existir; OpenAI tem preferência)
+    "OPENAI_ANALISE_MODEL": "gpt-5.4-mini",
+    "GEMINI_ANALISE_MODEL": "gemini-3.8-flash",
+    "ANALISE_PROVEDOR": "openai"
+  }
+  // Chaves secretas: NÃO coloque aqui. Cadastre no painel da Cloudflare, em
+  // Worker > Settings > Variables and Secrets, com o tipo "Secret":
+  //   OPENAI_API_KEY, ELEVENLABS_API_KEY, GEMINI_API_KEY, ACCESS_CODE (todas opcionais)
+  // Para rodar no seu computador, use o arquivo .dev.vars (veja .dev.vars.example).
+}
